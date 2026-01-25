@@ -17,4 +17,5 @@
   overlays = import ./overlays; # nixpkgs overlays
 
   v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
+  jetbra-free = pkgs.callPackage ./pkgs/jetbra-free { };
 }
