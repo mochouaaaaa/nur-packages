@@ -9,13 +9,16 @@
 {
   pkgs ? import <nixpkgs> { },
 }:
-
+let
+  v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
+in
 {
   # The `lib`, `modules`, and `overlays` names are special
   lib = import ./lib { inherit pkgs; }; # functions
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
+  inherit v2dat;
   jetbra-free = pkgs.callPackage ./pkgs/jetbra-free { };
+  dns-rules = pkgs.callPackage ./pkgs/dns-rules.nix { inherit v2dat; };
 }

@@ -40,6 +40,12 @@ jobs:
           - nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/heads/nixos-25.05.tar.gz
     runs-on: ubuntu-latest
     steps:
+      - name: Run update dns-rules script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x update.sh
+          ./update.sh
       - name: Checkout repository
         uses: actions/checkout@v5
       - name: Install nix
