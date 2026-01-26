@@ -20,6 +20,7 @@ let
 in
 stdenv.mkDerivation {
   name = "dns-rules";
+  inherit version;
 
   nativeBuildInputs = [ v2dat ];
 
