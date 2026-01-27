@@ -6,7 +6,7 @@
 }:
 let
 
-  version = "202601252215";
+  version = "202601262216";
 
   geoip = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${version}/geoip.dat";
@@ -15,7 +15,7 @@ let
 
   geosite = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${version}/geosite.dat";
-    hash = "sha256-au92YwJsekB3n19jJgJ1zxb5d7qc3oOUqYs0RifCpjA="; # GEOSITE_HASH
+    hash = "sha256-Fe+Y4ElTUINdu6B8C7m0nCUZtWo+7FXXF5xvdtu8wok="; # GEOSITE_HASH
   };
 in
 stdenv.mkDerivation {
