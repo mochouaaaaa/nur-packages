@@ -55,6 +55,12 @@ jobs:
       - name: Show nixpkgs version
         run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
 
+      - name: Run nix-update
+        run: |
+          nix run nixpkgs#nix-update -- ty
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run update dns-rules script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

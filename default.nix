@@ -29,4 +29,5 @@ in
     webkitgtk_4_0 = pkgs25-05.webkitgtk_4_0;
     libsoup_2_4 = pkgs25-05.libsoup_2_4;
   };
+  ty = pkgs.callPackage ./pkgs/ty.nix { };
 }
