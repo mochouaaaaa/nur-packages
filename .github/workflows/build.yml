@@ -39,6 +39,8 @@ jobs:
           - nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/heads/nixos-unstable.tar.gz
           - nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/heads/nixos-25.05.tar.gz
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -83,3 +85,18 @@ jobs:
         # Don't replace <YOUR_REPO_NAME> here!
         if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' }}
         run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"
+
+      - name: Get list of changed files
+        id: vars
+        run: |
+          CHANGED=$(git status --porcelain | sed 's/^...//' | tr '\n' ',' | sed 's/,$//')
+          echo "files=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Commit and Push changes
+        if: steps.vars.outputs.files != ''
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-update ${{ steps.vars.outputs.files }}"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          push_options: "--force"
