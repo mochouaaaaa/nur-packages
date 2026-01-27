@@ -6,7 +6,7 @@
 
 buildGoModule (finalAttrs: {
   pname = "v2dat";
-  version = "0.1.0";
+  version = "release";
 
   src = fetchFromGitHub {
     owner = "urlesistiana";
@@ -22,6 +22,8 @@ buildGoModule (finalAttrs: {
     "-w"
     "-X main.version=${finalAttrs.version}"
   ];
+
+  passthru.autoUpdate = false;
 
   meta = with lib; {
     description = "A cli tool that can unpack v2ray data packages. (Note: This project is for fun ONLY. You should build your own data dirctly from upstreams instead of unpacking a v2ray data pack.)";

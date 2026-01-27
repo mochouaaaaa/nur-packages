@@ -52,12 +52,25 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Show nixpkgs version
-        run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
+
+      - name: Show nixpkgs version and install nix-update
+        run: |
+          nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
+
+      - name: Install nix-update environment
+        run: |
+          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+          nix-channel --update
+          nix-env -iA nixpkgs.nix-update nixpkgs.nix-prefetch-git nixpkgs.prefetch-npm-deps nixpkgs.jq nixpkgs.nodejs
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
 
       - name: Run nix-update
         run: |
-          nix run nixpkgs#nix-update -- ty
+          python3 ./github/scripts/update-nix.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -100,9 +113,16 @@ jobs:
 
       - name: Commit and Push changes
         if: steps.vars.outputs.files != ''
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: auto-update ${{ steps.vars.outputs.files }}"
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "github-actions[bot]@users.noreply.github.com"
-          push_options: "--force"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add pkgs
+          git commit -F update-message.log
+          git push --force
+        # uses: stefanzweifel/git-auto-commit-action@v5
+        # with:
+        #   commit_message: "chore: auto-update ${{ steps.vars.outputs.files }}"
+        #   commit_user_name: "github-actions[bot]"
+        #   commit_user_email: "github-actions[bot]@users.noreply.github.com"
+        #   push_options: "--force"

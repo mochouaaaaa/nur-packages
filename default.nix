@@ -25,9 +25,7 @@ in
   inherit v2dat;
   jetbra-free = pkgs.callPackage ./pkgs/jetbra-free { };
   dns-rules = pkgs.callPackage ./pkgs/dns-rules.nix { inherit v2dat; };
-  pot = pkgs25-05.callPackage ./pkgs/pot.nix {
-    # webkitgtk_4_0 = pkgs25-05.webkitgtk_4_0;
-    # libsoup_2_4 = pkgs25-05.libsoup_2_4;
-  };
   ty = pkgs.callPackage ./pkgs/ty.nix { };
+
+  pot = pkgs25-05.callPackage ./pkgs/pot.nix { };
 }

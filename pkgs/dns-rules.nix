@@ -1,4 +1,5 @@
 {
+  lib,
   v2dat,
   stdenv,
   fetchurl,
@@ -6,33 +7,27 @@
 }:
 let
 
-  version = "202601262216";
+in
+stdenv.mkDerivation (finalAttrs: {
+  pname = "dns-rules";
+  version = "202601222216";
+
+  src = fetchurl {
+    url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geosite.dat";
+    hash = "sha256-Fe+Y4ElTUINdu6B8C7m0nCUZtWo+7FXXF5xvdtu8wok="; # GEOSITE_HASH
+  };
 
   geoip = fetchurl {
-    url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${version}/geoip.dat";
+    url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geoip.dat";
     hash = "sha256-P0HllTo8F/c5Yvy21TEcIJjAcWikLow6qjPDd8t3Xqc="; # GEOIP_HASH
   };
 
-  geosite = fetchurl {
-    url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${version}/geosite.dat";
-    hash = "sha256-Fe+Y4ElTUINdu6B8C7m0nCUZtWo+7FXXF5xvdtu8wok="; # GEOSITE_HASH
-  };
-in
-stdenv.mkDerivation {
-  name = "dns-rules";
-  inherit version;
-
   nativeBuildInputs = [ v2dat ];
-
-  srcs = [
-    geoip
-    geosite
-  ];
 
   dontUnpack = true;
   installPhase = ''
-    ln -s ${geoip} geoip.dat
-    ln -s ${geosite} geosite.dat
+    ln -s $geoip geoip.dat
+    ln -s $src geosite.dat
 
     mkdir -p $out/share/mosdns
 
@@ -45,4 +40,14 @@ stdenv.mkDerivation {
     v2dat unpack geosite -o $out/share/mosdns -f "geolocation-!cn" geosite.dat
   '';
 
-}
+  passthru.autoUpdate = true;
+
+  meta = {
+    description = "dns-rules";
+    homepage = "https://github.com/Loyalsoldier/v2ray-rules-dat/";
+    license = lib.licenses.gpl3;
+    platforms = [ ];
+    mainProgram = "dns-rules";
+  };
+
+})

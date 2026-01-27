@@ -30,8 +30,8 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "pot-app";
     repo = "pot-desktop";
-    tag = finalAttrs.version;
-    hash = "sha256-0Q1hf1AGAZv6jt05tV3F6++lzLpddvjhiykIhV40cPs=";
+    rev = "dad7b8044e30fd25b719b365eb5d6add63594765";
+    hash = "sha256-TL4l1l/UfLAAZ1BO0kIxO5w0gqJV14dLYOuRMZssbCQ=";
   };
 
   postPatch = ''

@@ -1,8 +1,6 @@
 {
   lib,
-  stdenv,
   buildGoModule,
-
   go-bindata,
 }:
 
@@ -10,50 +8,29 @@ buildGoModule {
   pname = "jetbra";
   version = "release";
 
-  src = lib.cleanSource ./src;
+  src = ./src;
+  subPackages = [ "cmd" ];
 
-  nativeBuildInputs = [
-    go-bindata
-  ];
+  nativeBuildInputs = [ go-bindata ];
 
   vendorHash = "sha256-ZL9Rxnj6Z4oEBeFxX13mnd6F7vSuOFq1R/Ja7OuRp6E=";
 
-  checkPhase = "true";
-
-  buildPhase = ''
-    runHook preBuild
-    go-bindata --version
+  preBuild = ''
     go-bindata -o internal/util/access.go -pkg util static/... templates/... cache/...
-  ''
-  + lib.optionalString (stdenv.isDarwin && stdenv.hostPlatform.system == "x86_64-darwin") ''
-    make build-mac
-  ''
-  + lib.optionalString (
-    stdenv.isDarwin && stdenv.hostPlatform.system == "aarch64-darwin"
-  ) "make build-mac-arm"
-  + lib.optionalString (stdenv.isLinux) ''
-    make build-linux
-  ''
-  + ''
-    runHook postBuild
   '';
 
-  installPhase = ''
-    runHook preInstall
-  ''
-  + lib.optionalString (stdenv.isLinux) ''
-    install -Dm 0755 ./bin/jetbra-free-linux-amd64 $out/bin/jetbra-free
-  ''
-  + lib.optionalString (stdenv.isDarwin && stdenv.hostPlatform.system == "x86_64-darwin") ''
-    install -Dm 0755 ./bin/jetbra-free-darwin-amd64 $out/bin/jetbra-free
-  ''
-  + lib.optionalString (
-    stdenv.isDarwin && stdenv.hostPlatform.system == "aarch64-darwin"
-  ) "install -Dm 0755 ./bin/jetbra-free-darwin-arm64 $out/bin/jetbra-free"
-
-  + ''
-    make clean
-    runHook postInstall
+  postInstall = ''
+    if [ -f $out/bin/cmd ]; then
+      mv $out/bin/cmd $out/bin/jetbra-free
+    fi
   '';
 
+  doCheck = false;
+
+  meta = with lib; {
+    description = "jetbra-free";
+    license = licenses.mit;
+    platforms = platforms.unix;
+    mainProgram = "jetbra-free";
+  };
 }
