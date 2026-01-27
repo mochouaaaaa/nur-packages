@@ -4,22 +4,16 @@
   buildGoModule,
 
   go-bindata,
-  go,
 }:
 
-buildGoModule (finalAttrs: {
+buildGoModule {
   pname = "jetbra";
   version = "release";
 
   src = lib.cleanSource ./src;
 
-  env = {
-    CGO_ENABLED = 1;
-  };
-
   nativeBuildInputs = [
     go-bindata
-    go
   ];
 
   vendorHash = "sha256-ZL9Rxnj6Z4oEBeFxX13mnd6F7vSuOFq1R/Ja7OuRp6E=";
@@ -62,4 +56,4 @@ buildGoModule (finalAttrs: {
     runHook postInstall
   '';
 
-})
+}
