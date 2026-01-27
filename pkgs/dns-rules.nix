@@ -46,7 +46,7 @@ stdenv.mkDerivation (finalAttrs: {
     description = "dns-rules";
     homepage = "https://github.com/Loyalsoldier/v2ray-rules-dat/";
     license = lib.licenses.gpl3;
-    platforms = [ ];
+    platforms = lib.platforms.all;
     mainProgram = "dns-rules";
   };
 
