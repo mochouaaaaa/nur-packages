@@ -13,10 +13,11 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "orblazer";
     repo = "plasma-applet-resources-monitor";
-    tag = "${version}";
-    sha256 = "sha256-pBswbKoMGAmUU0jIMLPiFFiTIohQsuC+XHkpZRAN5Ok=";
+    rev = "v${version}";
+    hash = "sha256-uP1TjH7vFIB9DO9SJXOLsQGQ7CRjGNuPY8c4vszIHmk=";
   };
 
+  dontBuild = true;
   dontWrapQtApps = true;
 
   propagatedUserEnvPkgs = with kdePackages; [

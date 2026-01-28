@@ -14,26 +14,19 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "p-connor";
     repo = "plasma-drawer";
-    tag = "${version}";
-    hash = "sha256-TLLvjZdGdT/8zVpPGwnRofr1NZVDvBUIUpp/kwk3kR4=";
+    rev = "v${version}";
+    hash = "sha256-1RShJo74wS2Y98RyAlTozR0mcrF+3oKJ9yv7L/u1Uzo=";
   };
 
-  nativeBuildInputs = [ unzip ];
-  unpackPhase = ''
-    echo "Skippiong unpackPhase"
-  '';
-
   propagatedUserEnvPkgs = with kdePackages; [ kconfig ];
+  dontBuild = true;
   dontWrapQtApps = true;
 
   installPhase = ''
     runHook preInstall
 
-    mkdir tmpdir
-    unzip $src -d tmpdir
-
     mkdir -p $out/share/plasma/plasmoids/p-connor.plasma-drawer
-    cp -r tmpdir/* $out/share/plasma/plasmoids/p-connor.plasma-drawer
+    cp -r $src/* $out/share/plasma/plasmoids/p-connor.plasma-drawer
 
     runHook postInstall
   '';

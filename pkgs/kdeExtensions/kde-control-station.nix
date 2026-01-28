@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation {
     owner = "EliverLara";
     repo = "kde-control-station";
     rev = "fdb2d030478eb17a4464fff139da9f639499c6cd";
-    sha256 = "sha256-mMeZ6czgLMiCt1nkZrzm1GUuSfAxnkW1mmXCuW9RPfU=";
+    hash = "sha256-mMeZ6czgLMiCt1nkZrzm1GUuSfAxnkW1mmXCuW9RPfU=";
   };
 
   propagatedUserEnvPkgs = with kdePackages; [

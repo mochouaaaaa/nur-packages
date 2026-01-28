@@ -12,8 +12,8 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "olib14";
     repo = "thermalmonitor";
-    tag = "v${version}";
-    sha256 = "sha256-4+SNHlqWB/nLkWc2pOY5CAIkcT7NE/fscV1RfhqJ5CM=";
+    rev = "v${version}";
+    hash = "sha256-aHrPfDWvzVrY3dTPAuYk8lNQXtLjPG/Az5roFP4zOzk=";
   };
 
   dontWrapQtApps = true;

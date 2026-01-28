@@ -13,7 +13,7 @@ stdenvNoCC.mkDerivation rec {
     owner = "dfaust";
     repo = "plasma-applet-netspeed-widget";
     rev = "v${version}";
-    sha256 = "sha256-lP2wenbrghMwrRl13trTidZDz+PllyQXQT3n9n3hzrg=";
+    hash = "sha256-lP2wenbrghMwrRl13trTidZDz+PllyQXQT3n9n3hzrg=";
   };
 
   dontWrapQtApps = true;

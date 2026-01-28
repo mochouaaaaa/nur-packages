@@ -13,7 +13,7 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "ChrTall";
     repo = "kppleMenu";
-    tag = "v${version}";
+    rev = "v${version}";
     hash = "sha256-TLLvjZdGdT/8zVpPGwnRofr1NZVDvBUIUpp/kwk3kR4=";
   };
 

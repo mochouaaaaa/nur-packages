@@ -26,7 +26,7 @@ MESSAGE_LOG = ["chore: auto-update packages \n\n\n"]
 
 
 def update_message():
-    if MESSAGE_LOG:
+    if MESSAGE_LOG and len(MESSAGE_LOG) > 1:
         with open("./update-message.log", "a", encoding="utf-8") as f:
             f.writelines(MESSAGE_LOG)
 

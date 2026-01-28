@@ -13,8 +13,8 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "dhruv8sh";
     repo = "plasma6-window-title-applet";
-    tag = "${version}";
-    sha256 = "sha256-pFXVySorHq5EpgsBz01vZQ0sLAy2UrF4VADMjyz2YLs=";
+    rev = "v${version}";
+    hash = "sha256-pFXVySorHq5EpgsBz01vZQ0sLAy2UrF4VADMjyz2YLs=";
   };
 
   propagatedUserEnvPkgs = with kdePackages; [ kconfig ];
