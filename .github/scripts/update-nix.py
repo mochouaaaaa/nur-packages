@@ -31,8 +31,15 @@ def update_message():
             f.writelines(MESSAGE_LOG)
 
 
-async def update_pkg(pkg: str):
-    command = ["nix-update", f"{pkg}"]
+async def update_pkg(pkgs):
+    pkg, args = pkgs
+    command = ["nix-update"]
+    if args:
+        command += args
+
+    command.append(f"{pkg}")
+
+    print(" ".join(command))
     result: str = await run_command(*command)
     match = re.search(r"(Update\s+\S+\s+->\s+\S+)", result)
     if match:
@@ -46,8 +53,13 @@ async def check_auto_update(package: str):
 
     resutl_json = json.loads(result)
     if result:
-        if resutl_json.get("autoUpdate") is True or resutl_json.get("updateScript"):
-            return package
+        if resutl_json.get("autoUpdate") is True:
+            return package, None
+
+        if resutl_json.get("updateScript", None):
+            scripts = resutl_json.get("updateScript")
+            extraArgs = scripts[1:]
+            return package, extraArgs
 
 
 async def find_packages() -> List[str]:

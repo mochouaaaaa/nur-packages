@@ -15,6 +15,8 @@
 }:
 let
   v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
+
+  mkScope = attrs: pkgs.lib.recurseIntoAttrs attrs;
 in
 {
   # The `lib`, `modules`, and `overlays` names are special
@@ -28,4 +30,14 @@ in
   ty = pkgs.callPackage ./pkgs/ty.nix { };
 
   pot = pkgs25-05.callPackage ./pkgs/pot.nix { };
+
+  kdeExtensions = mkScope {
+    kde-control-station = pkgs.callPackage ./pkgs/kdeExtensions/kde-control-station.nix { };
+    kpple-menu = pkgs.callPackage ./pkgs/kdeExtensions/kpple-menu.nix { };
+    net-speed = pkgs.callPackage ./pkgs/kdeExtensions/net-speed.nix { };
+    plasma-darwer = pkgs.callPackage ./pkgs/kdeExtensions/plasma-darwer.nix { };
+    applet-window-title = pkgs.callPackage ./pkgs/kdeExtensions/applet-window-title.nix { };
+    resources-monitor = pkgs.callPackage ./pkgs/kdeExtensions/resources-monitor.nix { };
+    thermal-monitor = pkgs.callPackage ./pkgs/kdeExtensions/thermal-monitor.nix { };
+  };
 }
