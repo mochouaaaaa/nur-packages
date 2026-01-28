@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation rec {
     owner = "ChrTall";
     repo = "kppleMenu";
     tag = "v${version}";
-    sha256 = "sha256-TLLvjZdGdT/8zVpPGwnRofr1NZVDvBUIUpp/kwk3kR4=";
+    hash = "sha256-TLLvjZdGdT/8zVpPGwnRofr1NZVDvBUIUpp/kwk3kR4=";
   };
 
   propagatedUserEnvPkgs = with kdePackages; [ kconfig ];

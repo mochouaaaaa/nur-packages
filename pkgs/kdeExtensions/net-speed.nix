@@ -12,7 +12,7 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "dfaust";
     repo = "plasma-applet-netspeed-widget";
-    tag = "${version}";
+    rev = "v${version}";
     sha256 = "sha256-lP2wenbrghMwrRl13trTidZDz+PllyQXQT3n9n3hzrg=";
   };
 
