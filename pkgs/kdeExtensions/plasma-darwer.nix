@@ -3,7 +3,6 @@
   stdenvNoCC,
   fetchFromGitHub,
   kdePackages,
-  unzip,
   nix-update-script,
   ...
 }:

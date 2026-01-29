@@ -1,20 +1,21 @@
+from ntpath import dirname
 import re
-from typing import List
+from typing import List, Tuple, Optional
 import os
 import sys
 import json
 import shutil
 import asyncio
+from pathlib import Path
 
 
-async def run_command(*args):
+async def run_command(*args) -> str:
     try:
         process = await asyncio.create_subprocess_exec(
             *args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
     except Exception as e:
-        print(e)
-        return None
+        return ""
 
     stdout, stderr = await process.communicate()
     if process.returncode != 0:
@@ -25,17 +26,33 @@ async def run_command(*args):
 MESSAGE_LOG = ["chore: auto-update packages \n\n\n"]
 
 
-def update_message():
+def update_message() -> None:
     if MESSAGE_LOG and len(MESSAGE_LOG) > 1:
         with open("./update-message.log", "a", encoding="utf-8") as f:
             f.writelines(MESSAGE_LOG)
 
 
-async def update_pkg(pkgs):
+async def get_pkg_path_simple(package: str) -> str | None:
+    nix_expression = f"""
+        (builtins.unsafeGetAttrPos "pname" (import ./default.nix {{}}).{package}).file
+    """
+    command = ["nix", "eval", "--expr", nix_expression, "--impure"]
+    nix_file = await run_command(*command)
+    path = Path(json.loads(nix_file))
+    update = dirname(path) + "/update.sh"
+    if os.path.exists(update):
+        return update
+
+
+async def update_pkg(pkgs: Tuple[str, List[str]]):
     pkg, args = pkgs
-    command = ["nix-update"]
-    if args:
-        command += args
+
+    update_path = await get_pkg_path_simple(pkg)
+
+    if not args:
+        command = ["nix-update"]
+    else:
+        command = args if update_path is None else [update_path] + args[1:]
 
     command.append(f"{pkg}")
 
@@ -46,7 +63,7 @@ async def update_pkg(pkgs):
         MESSAGE_LOG.append(f"[{pkg}]: {match.group(1)} \n")
 
 
-async def check_auto_update(package: str):
+async def check_auto_update(package: str) -> Optional[Tuple[str, Optional[List[str]]]]:
     nix_expression = "x: builtins.intersectAttrs { autoUpdate = null; updateScript = null; } x"
     command = ["nix", "eval", f".#{package}.passthru", "--json", "--apply", nix_expression]
     result = await run_command(*command)
@@ -58,8 +75,9 @@ async def check_auto_update(package: str):
 
         if resutl_json.get("updateScript", None):
             scripts = resutl_json.get("updateScript")
-            extraArgs = scripts[1:]
-            return package, extraArgs
+            if isinstance(scripts, str):
+                scripts = [scripts]
+            return package, scripts
 
 
 async def find_packages() -> List[str]:
@@ -68,7 +86,7 @@ async def find_packages() -> List[str]:
     return list(json.loads(result).keys())
 
 
-async def main():
+async def main() -> None:
     packages = await find_packages()
 
     tasks = [check_auto_update(pkgs) for pkgs in packages]

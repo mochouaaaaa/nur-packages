@@ -97,6 +97,8 @@ stdenv.mkDerivation (finalAttrs: {
     }
   )}";
 
+  passthru.autoUpdate = false;
+
   meta = {
     description = "Cross-platform translation software";
     mainProgram = "pot";

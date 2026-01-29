@@ -24,5 +24,18 @@
       packages = forAllSystems (
         system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
       );
+
+      devShell = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        pkgs.mkShell {
+          buildInputs = with pkgs; [
+            nix-update
+            common-updater-scripts
+          ];
+        }
+      );
     };
 }

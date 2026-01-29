@@ -10,11 +10,11 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dns-rules";
-  version = "202601272218";
+  version = "202601282220";
 
   src = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geosite.dat";
-    hash = "sha256-p5aIGDe5Ti4Z3EVKCRG9ZbqD6uHi0l/gFVaxxJwjzgU="; # GEOSITE_HASH
+    hash = "sha256-0w13LNUYsMdhFUu+wkewpjVqMwl1sfQk6HWORsgTtaQ="; # GEOSITE_HASH
   };
 
   geoip = fetchurl {
@@ -40,7 +40,7 @@ stdenv.mkDerivation (finalAttrs: {
     v2dat unpack geosite -o $out/share/mosdns -f "geolocation-!cn" geosite.dat
   '';
 
-  passthru.autoUpdate = true;
+  passthru.updateScript = ./update.sh;
 
   meta = {
     description = "dns-rules";
