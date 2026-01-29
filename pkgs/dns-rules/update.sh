@@ -32,11 +32,14 @@ echo "Latest Tag: $LATEST_TAG"
 
 ATTR_NAME="${1:-dns-rules}"
 
-update-source-version "$ATTR_NAME" "$LATEST_TAG" \
-    --file="$TARGET_FILE"
+update-source-version $ATTR_NAME $LATEST_TAG \
+    --file=$TARGET_FILE \
+    --ignore-same-version
 
-update-source-version "$ATTR_NAME" "$LATEST_TAG" \
-    --file="$TARGET_FILE" \
-    --source-key="geoip"
+update-source-version $ATTR_NAME $LATEST_TAG \
+    --file=$TARGET_FILE \
+    --source-key=geoip \
+    --ignore-same-version
 
+echo "Update $CURRENT_VERSION -> $LATEST_TAG."
 echo "Update successful!"
