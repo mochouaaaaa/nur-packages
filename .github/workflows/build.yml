@@ -99,11 +99,22 @@ jobs:
         run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"
 
       - name: Commit and Push changes
-        if: steps.vars.outputs.files != ''
         run: |
+          if [ ! -f update-message.log ]; then
+            echo "Log file not found, skipping commit."
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add pkgs
+
+          # 检查是否有实际变动，避免 git commit 报错
+          if git diff --cached --quiet; then
+            echo "No actual changes in pkgs, skipping."
+            exit 0
+          fi
+
           git commit -F update-message.log
           git push --force
