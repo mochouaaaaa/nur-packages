@@ -14,9 +14,10 @@
   }) { inherit (pkgs.stdenv.hostPlatform) system; },
 }:
 let
-  v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
-
   mkScope = attrs: pkgs.lib.recurseIntoAttrs attrs;
+
+  v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
+  lmdg = pkgs.callPackage ./pkgs/rime/lmdg { };
 in
 {
   # The `lib`, `modules`, and `overlays` names are special
@@ -30,6 +31,11 @@ in
   ty = pkgs.callPackage ./pkgs/ty.nix { };
 
   pot = pkgs25-05.callPackage ./pkgs/pot.nix { };
+
+  rime = mkScope {
+    inherit lmdg;
+    wanxiang = pkgs.callPackage ./pkgs/rime/wanxiang.nix { inherit lmdg; };
+  };
 
   kdeExtensions = mkScope {
     kde-control-station = pkgs.callPackage ./pkgs/kdeExtensions/kde-control-station.nix { };
