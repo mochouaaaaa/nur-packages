@@ -22,7 +22,10 @@
         }
       );
       packages = forAllSystems (
-        system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
+        system:
+        nixpkgs.lib.filterAttrs (
+          n: v: nixpkgs.lib.isDerivation v || (nixpkgs.lib.isAttrs v && v.recurseForDerivations or false)
+        ) self.legacyPackages.${system}
       );
 
       devShell = forAllSystems (
