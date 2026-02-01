@@ -13,13 +13,13 @@ in
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "rime-wanxiang";
-  version = "apk";
+  version = "14.6.5";
 
   src = fetchFromGitHub {
     owner = "amzxyz";
     repo = "rime_wanxiang";
     tag = "v" + finalAttrs.version;
-    hash = "sha256-qKIg40WJujAZltGQfJwBYDq1aLU/avfRd2nZORdeB78=";
+    hash = "sha256-fzw/gF7tO0spNz0bYhsGEgX//t/MZ+wxjTsUnxuXCZ4=";
   };
 
   installPhase = ''
