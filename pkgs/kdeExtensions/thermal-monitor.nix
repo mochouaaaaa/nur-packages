@@ -7,13 +7,13 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "thermal-monitor";
-  version = "0.2.6";
+  version = "0.2.7";
 
   src = fetchFromGitHub {
     owner = "olib14";
     repo = "thermalmonitor";
     rev = "v${version}";
-    hash = "sha256-aHrPfDWvzVrY3dTPAuYk8lNQXtLjPG/Az5roFP4zOzk=";
+    hash = "sha256-1TaeE9nsivkaiaCA8lTqwS3DGxh4MlsX1D5Y3VaU584=";
   };
 
   dontWrapQtApps = true;
