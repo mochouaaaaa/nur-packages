@@ -52,7 +52,11 @@ async def update_pkg(pkgs: Tuple[str, List[str]]):
     if not args:
         command = ["nix-update"]
     else:
-        command = args if update_path is None else [update_path] + args[1:]
+        if update_path is None:
+            command = ["nix-update"]
+        else:
+            command = [update_path]
+        command = command + args[1:]
 
     command.append(f"{pkg}")
 
