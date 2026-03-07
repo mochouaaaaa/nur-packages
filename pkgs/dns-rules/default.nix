@@ -10,16 +10,16 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dns-rules";
-  version = "202603052225";
+  version = "202603062222";
 
   src = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geosite.dat";
-    hash = "sha256-nGW4yiuIpypaaUA0mdi+19DyrPz0M5ZDYA5Wn9GKutE="; # GEOSITE_HASH
+    hash = "sha256-AGajuRS4zIWHLDEebH9SYv0V3X5YJc7YbbBqCaHWHXE="; # GEOSITE_HASH
   };
 
   geoip = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geoip.dat";
-    hash = "sha256-OgBwbgJo7YOB56JhW1xG9si64ym953gRQnqm+0vEXLE="; # GEOIP_HASH
+    hash = "sha256-V8ktJgXDHQwwPwoaCAGxKkwQAOPKSeWjb+ocAV4d2k8="; # GEOIP_HASH
   };
 
   nativeBuildInputs = [ v2dat ];
