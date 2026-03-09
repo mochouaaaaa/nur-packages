@@ -13,13 +13,13 @@ in
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "rime-wanxiang";
-  version = "15.1.5";
+  version = "15.1.6";
 
   src = fetchFromGitHub {
     owner = "amzxyz";
     repo = "rime_wanxiang";
     tag = "v" + finalAttrs.version;
-    hash = "sha256-iiGAoZJLbyM0o0YaH193Q5eUBjuVm0/V7AZ7J0OrJhI=";
+    hash = "sha256-QwKG8/RDicgOlpEdI9a8XbDO5+0vgt9lWXpZ/U+AEuc=";
   };
 
   installPhase = ''
