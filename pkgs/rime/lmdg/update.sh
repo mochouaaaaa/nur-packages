@@ -13,3 +13,5 @@ update-source-version $ATTR_NAME LTS \
     --file=$TARGET_FILE \
     --ignore-same-hash \
     --ignore-same-version
+
+echo "Update LTS -> LTS"

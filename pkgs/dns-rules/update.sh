@@ -41,5 +41,5 @@ update-source-version $ATTR_NAME $LATEST_TAG \
     --source-key=geoip \
     --ignore-same-version
 
-echo "Update $CURRENT_VERSION -> $LATEST_TAG."
+echo "Update $CURRENT_VERSION -> $LATEST_TAG"
 echo "Update successful!"

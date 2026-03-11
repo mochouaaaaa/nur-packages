@@ -37,6 +37,10 @@ in
     wanxiang = pkgs.callPackage ./pkgs/rime/wanxiang.nix { inherit lmdg; };
   };
 
+  fonts = mkScope {
+    monaco = pkgs.callPackage ./pkgs/fonts/monaco.nix { };
+  };
+
   kdeExtensions = mkScope {
     kde-control-station = pkgs.callPackage ./pkgs/kdeExtensions/kde-control-station.nix { };
     kpple-menu = pkgs.callPackage ./pkgs/kdeExtensions/kpple-menu.nix { };
