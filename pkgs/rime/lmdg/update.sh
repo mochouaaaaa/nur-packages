@@ -10,7 +10,7 @@ TARGET_FILE="$SCRIPT_DIR/default.nix"
 ATTR_NAME="${1:-rime.lmdg}"
 
 get_hash() {
-    _hash=nix-instantiate --eval -A $ATTR_NAME.src.hash
+    _hash=$(nix-instantiate --eval -A $ATTR_NAME.src.hash)
     echo "$_hash"
 }
 
