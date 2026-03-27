@@ -30,7 +30,7 @@ in
   dns-rules = pkgs.callPackage ./pkgs/dns-rules { inherit v2dat; };
   ty = pkgs.callPackage ./pkgs/ty.nix { };
 
-  pot = pkgs25-05.callPackage ./pkgs/pot.nix { };
+  # pot = pkgs25-05.callPackage ./pkgs/pot.nix { };
 
   rime = mkScope {
     inherit lmdg;
