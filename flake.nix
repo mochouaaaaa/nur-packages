@@ -2,13 +2,11 @@
   description = "My personal NUR repository";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs25-05.url = "github:nixos/nixpkgs/nixos-25.05";
   };
   outputs =
     {
       self,
       nixpkgs,
-      nixpkgs25-05,
     }:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
@@ -17,8 +15,7 @@
       legacyPackages = forAllSystems (
         system:
         import ./default.nix {
-          pkgs = import nixpkgs { inherit system; };
-          pkgs25-05 = import nixpkgs25-05 { inherit system; };
+          flake_pkgs = import nixpkgs { inherit system; };
         }
       );
       packages = forAllSystems (

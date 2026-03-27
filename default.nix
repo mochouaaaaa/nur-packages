@@ -7,13 +7,17 @@
 #     nix-build -A mypackage
 
 {
-  pkgs ? import <nixpkgs> { },
-  pkgs25-05 ? import (fetchTarball {
-    url = "https://github.com/nixos/nixpkgs/archive/nixos-25.05.tar.gz";
-    sha256 = "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=";
-  }) { inherit (pkgs.stdenv.hostPlatform) system; },
+  flake_pkgs ? null,
 }:
 let
+  lock = builtins.fromJSON (builtins.readFile ./flake.lock);
+  nixpkgs_src = fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/${lock.nodes.nixpkgs.locked.rev}.tar.gz";
+    sha256 = lock.nodes.nixpkgs.locked.narHash;
+  };
+
+  pkgs = if flake_pkgs != null then flake_pkgs else import nixpkgs_src { };
+
   mkScope = attrs: pkgs.lib.recurseIntoAttrs attrs;
 
   v2dat = pkgs.callPackage ./pkgs/v2dat.nix { };
