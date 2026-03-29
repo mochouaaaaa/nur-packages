@@ -35,8 +35,6 @@ jobs:
         # https://github.com/<your_githubname>/nur-packages/settings/secrets
         cachixName:
           - mochouaaaaa
-        nixPath:
-          - nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/heads/nixpkgs-unstable.tar.gz
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -47,20 +45,18 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v31
         with:
-          nix_path: "${{ matrix.nixPath }}"
+          nix_path: nixpkgs=flake:nixpkgs
           extra_nix_config: |
             experimental-features = nix-command flakes
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: Show nixpkgs version and install nix-update
         run: |
-          nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
+          nix eval nixpkgs#lib.version
 
       - name: Install nix-update environment
         run: |
-          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-          nix-channel --update
-          nix-env -iA nixpkgs.nix-update nixpkgs.common-updater-scripts nixpkgs.nix-prefetch-git nixpkgs.prefetch-npm-deps nixpkgs.jq nixpkgs.nodejs
+          nix profile install nixpkgs#nix-update nixpkgs#common-updater-scripts nixpkgs#nix-prefetch-git nixpkgs#prefetch-npm-deps nixpkgs#jq nixpkgs#nodejs nixpkgs#cachix
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -81,6 +77,7 @@ jobs:
           name: ${{ matrix.cachixName }}
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          installCommand: "true"
 
       - name: Check evaluation
         run: |
