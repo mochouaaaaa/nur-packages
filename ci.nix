@@ -13,7 +13,6 @@
   pkgs ? null,
   ...
 }:
-
 with builtins;
 let
   lock = builtins.fromJSON (builtins.readFile ./flake.lock);
@@ -24,54 +23,59 @@ let
 
   flake_pkgs = if pkgs != null then pkgs else import nixpkgs_src { };
 
+  current_system = flake_pkgs.stdenv.hostPlatform;
+  lib = flake_pkgs.lib;
+
   isReserved = n: n == "lib" || n == "overlays" || n == "modules";
-  isDerivation = p: isAttrs p && p ? type && p.type == "derivation";
+  isDerivation = p: builtins.isAttrs p && p ? type && p.type == "derivation";
+
   isBuildable =
     p:
     let
+      isSupported = lib.meta.availableOn current_system p;
+
       licenseFromMeta = p.meta.license or [ ];
       licenseList = if builtins.isList licenseFromMeta then licenseFromMeta else [ licenseFromMeta ];
+      isFree = builtins.all (l: l.free or true) licenseList;
+
+      isNotBroken = !(p.meta.broken or false);
     in
-    !(p.meta.broken or false) && builtins.all (license: license.free or true) licenseList;
+    isSupported && isFree && isNotBroken;
+
   isCacheable = p: !(p.preferLocalBuild or false);
-  shouldRecurseForDerivations = p: isAttrs p && p.recurseForDerivations or false;
-
-  nameValuePair = n: v: {
-    name = n;
-    value = v;
-  };
-
-  concatMap = builtins.concatMap or (f: xs: concatLists (map f xs));
 
   flattenPkgs =
     s:
     let
       f =
         p:
-        if shouldRecurseForDerivations p then
+        if (builtins.isAttrs p && p.recurseForDerivations or false) then
           flattenPkgs p
         else if isDerivation p then
-          [ p ]
+          if isBuildable p then [ p ] else [ ]
         else
           [ ];
     in
-    concatMap f (attrValues s);
+    builtins.concatMap f (builtins.attrValues s);
 
   outputsOf = p: map (o: p.${o}) p.outputs;
 
-  nurAttrs = import ./default.nix { inherit flake_pkgs; };
+  nurAttrs = import ./default.nix { flake_pkgs = flake_pkgs; };
 
-  nurPkgs = flattenPkgs (
-    listToAttrs (
-      map (n: nameValuePair n nurAttrs.${n}) (filter (n: !isReserved n) (attrNames nurAttrs))
+  allValidPkgs = flattenPkgs (
+    builtins.listToAttrs (
+      map (n: {
+        name = n;
+        value = nurAttrs.${n};
+      }) (builtins.filter (n: !isReserved n) (builtins.attrNames nurAttrs))
     )
   );
 
 in
-rec {
-  buildPkgs = filter isBuildable nurPkgs;
-  cachePkgs = filter isCacheable buildPkgs;
+{
+  buildPkgs = allValidPkgs;
+  cachePkgs = builtins.filter isCacheable allValidPkgs;
 
-  buildOutputs = concatMap outputsOf buildPkgs;
-  cacheOutputs = concatMap outputsOf cachePkgs;
+  buildOutputs = builtins.concatMap outputsOf allValidPkgs;
+  cacheOutputs = builtins.concatMap outputsOf (builtins.filter isCacheable allValidPkgs);
 }

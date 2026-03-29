@@ -15,6 +15,7 @@ jobs:
   tests:
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-14]
         # Set this to notify the global nur package registry that changes are
         # available.
         #
@@ -36,8 +37,7 @@ jobs:
           - mochouaaaaa
         nixPath:
           - nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/heads/nixpkgs-unstable.tar.gz
-          - nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/heads/nixos-unstable.tar.gz
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: write
     steps:
@@ -101,6 +101,7 @@ jobs:
         run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"
 
       - name: Commit and Push changes
+        if: matrix.os == 'ubuntu-latest'
         run: |
           if [ ! -f update-message.log ]; then
             echo "Log file not found, skipping commit."
