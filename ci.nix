@@ -21,7 +21,7 @@ let
     sha256 = lock.nodes.nixpkgs.locked.narHash;
   };
 
-  flake_pkgs = if pkgs != null then pkgs else import nixpkgs_src { };
+  flake_pkgs = import nixpkgs_src { };
 
   current_system = flake_pkgs.stdenv.hostPlatform;
   lib = flake_pkgs.lib;
