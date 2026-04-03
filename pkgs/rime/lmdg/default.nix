@@ -11,7 +11,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "https://github.com/amzxyz/RIME-LMDG/releases/download/${finalAttrs.version}/wanxiang-lts-zh-hans.gram";
-    hash = "sha256-aTnOvC1zewZmmjs4KoP1xMjS9n1syO0RAYsIK33RTaw=";
+    hash = "sha256-WSjfGwO1tlYOR3hWxxY7z0dTnFGnkJZhl1AyyQvmmyY=";
   };
 
   dontUnpack = true;
