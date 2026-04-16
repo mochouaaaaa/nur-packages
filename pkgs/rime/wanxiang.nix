@@ -13,7 +13,7 @@ in
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "rime-wanxiang";
-  version = "15.7.1";
+  version = "apk";
 
   src = fetchFromGitHub {
     owner = "amzxyz";
