@@ -8,13 +8,13 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "kppleMenu";
-  version = "6.0.0";
+  version = "6.1.0";
 
   src = fetchFromGitHub {
     owner = "ChrTall";
     repo = "kppleMenu";
     rev = "v${version}";
-    hash = "sha256-TLLvjZdGdT/8zVpPGwnRofr1NZVDvBUIUpp/kwk3kR4=";
+    hash = "sha256-rCIMGLeVzmOk2VWqZ8F0dWJyPL1Zol8KPGgZCWTzoZE=";
   };
 
   propagatedUserEnvPkgs = with kdePackages; [ kconfig ];

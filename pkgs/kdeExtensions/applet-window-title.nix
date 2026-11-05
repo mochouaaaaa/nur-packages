@@ -8,13 +8,13 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "applet-window-title";
-  version = "0.9.0";
+  version = "0.21";
 
   src = fetchFromGitHub {
     owner = "dhruv8sh";
     repo = "plasma6-window-title-applet";
     rev = "v${version}";
-    hash = "sha256-pFXVySorHq5EpgsBz01vZQ0sLAy2UrF4VADMjyz2YLs=";
+    hash = "sha256-2GLVYix777hP4BkcrTHo6QOUQhcSnhkDBc3el8AuNe8=";
   };
 
   propagatedUserEnvPkgs = with kdePackages; [ kconfig ];

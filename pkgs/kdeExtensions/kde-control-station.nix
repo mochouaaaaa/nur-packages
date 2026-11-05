@@ -8,13 +8,13 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "kde-control-station";
-  version = "0-unstable-2026-03-26";
+  version = "0-unstable-2026-04-28";
 
   src = fetchFromGitHub {
     owner = "EliverLara";
     repo = "kde-control-station";
-    rev = "9f7f13f7fc5c72263bc5dbbaf66eb1f5b03b377d";
-    hash = "sha256-i/o1t/noeDA07rgtNI+yC+AufbcU8w8LLj2hmhK2lhc=";
+    rev = "bb473188a19d6cbe89a9c1bb5b08c7ddc609375d";
+    hash = "sha256-Hjjz3RefycImPgAuTUchr8Jikh4HlLf+fOPuh0aMP2M=";
   };
 
   propagatedUserEnvPkgs = with kdePackages; [
