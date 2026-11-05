@@ -83,9 +83,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     ''
   );
 
-  passthru = {
-    updateScript = nix-update-script { };
-  };
+  # passthru = {
+  #   updateScript = nix-update-script { };
+  # };
 
   meta = {
     description = "Extremely fast Python type checker and language server, written in Rust";
