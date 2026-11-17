@@ -16,7 +16,7 @@ let
     sha256 = lock.nodes.nixpkgs.locked.narHash;
   };
 
-  pkgs = import nixpkgs_src { };
+  pkgs = if flake_pkgs == null then import nixpkgs_src { } else flake_pkgs;
 
   mkScope = attrs: pkgs.lib.recurseIntoAttrs attrs;
 
