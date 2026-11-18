@@ -57,7 +57,7 @@ jobs:
 
       - name: Install nix-update environment
         run: |
-          nix profile install nixpkgs#nix-update nixpkgs#common-updater-scripts nixpkgs#nix-prefetch-git nixpkgs#prefetch-npm-deps nixpkgs#jq nixpkgs#nodejs nixpkgs#cachix
+          nix profile add nixpkgs#nix-update nixpkgs#common-updater-scripts nixpkgs#nix-prefetch-git nixpkgs#prefetch-npm-deps nixpkgs#jq nixpkgs#nodejs nixpkgs#cachix
 
       - name: Setup Python
         uses: actions/setup-python@v7
