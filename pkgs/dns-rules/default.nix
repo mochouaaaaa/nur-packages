@@ -10,11 +10,11 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dns-rules";
-  version = "202611172204";
+  version = "202611182204";
 
   src = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geosite.dat";
-    hash = "sha256-EY0uE1i4khKb5qr0fh8MGdSJRM+Pl5mAxlx95COUeIM="; # GEOSITE_HASH
+    hash = "sha256-Jo8wYZz+XbWpJXZr+WYEXyO1i5pXu8AMADlutUgBGBQ="; # GEOSITE_HASH
   };
 
   geoip = fetchurl {
